@@ -61,13 +61,13 @@ def toJSONFilters(actions):
     the list to which the target object belongs.    (So, returning an
     empty list deletes the object.)
     """
-    try: 
+    try:
         input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
     except AttributeError:
         # Python 2 does not have sys.stdin.buffer.
         # REF: http://stackoverflow.com/questions/2467928/python-unicodeencodeerror-when-reading-from-stdin
         input_stream = codecs.getreader("utf-8")(sys.stdin)
-        
+
     doc = json.loads(input_stream.read())
     if len(sys.argv) > 1:
         format = sys.argv[1]
@@ -98,6 +98,30 @@ def stringify(x):
     walk(x, go, "", {})
     return ''.join(result)
 
+
+def stringifyEx(x):
+    """Walks the tree x and returns concatenated string content,
+    leaving out all formatting.
+    """
+    result = []
+
+    def go(key, val, format, meta):
+        if key in ['Str', 'MetaString']:
+            result.append(val)
+        elif key == 'Code':
+            result.append(val[1])
+        elif key == 'Math':
+            result.append(val[1])
+        elif key == 'LineBreak':
+            result.append(" ")
+        elif key == 'Space':
+            result.append(" ")
+        elif key == 'RawInline':
+            result.append(val[1])
+
+    os.stderr.write('aaa')
+    walk(x, go, "", {})
+    return ''.join(result)
 
 def attributes(attrs):
     """Returns an attribute list, constructed from the
