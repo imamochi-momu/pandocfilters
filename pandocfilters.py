@@ -157,7 +157,7 @@ def toJSONFilters(actions):
         # REF: https://stackoverflow.com/questions/2467928/python-unicodeencode
         input_stream = codecs.getreader("utf-8")(sys.stdin)
 
-    doc = json.loads(input_stream.read())
+    source = input_stream.read()
 
     if len(sys.argv) > 1:
         format = sys.argv[1]
@@ -246,7 +246,6 @@ def stringifyEx(x):
         elif key == 'RawInline':
             result.append(val[1])
 
-    os.stderr.write('aaa')
     walk(x, go, "", {})
     return ''.join(result)
 
